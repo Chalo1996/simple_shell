@@ -28,15 +28,15 @@ void printprompt(void)
 /**
   *main - main function.
   *@ac: argument count
-  *@av: argument vector
-  *@envp: enviroment variables
+  *@argv: argument vector
+  *@env: enviroment variables
   *
   *Return: 0 on exit, 1 otherwise
   */
 
-int main(int ac, char **av, char **envp)
+int main(int ac, char **argv, char **env)
 {
-	char *buf = NULL, **cmd;
+	char *buf = NULL, **commands;
 	size_t len = 0;
 	ssize_t chars;
 	pid_t chpid;
@@ -44,8 +44,7 @@ int main(int ac, char **av, char **envp)
 	(void)ac;
 
 	printprompt();
-	chars = getline(&buf, &len, stdin);
-	while (chars)
+	while ((chars = getline(&buf, &len, stdin)))
 	{
 		signal(SIGINT, prompt);
 
@@ -53,21 +52,19 @@ int main(int ac, char **av, char **envp)
 			end_of_file(buf);
 		counter++;
 
-		cmd = string_strtok(buf);
+		commands = string_strtok(buf);
 		chpid = fork();
 		if (chpid  == -1)
 			fork_handler();
 
 		if (chpid == 0)
-			ext(cmd, buf, envp, av, counter);
+			ext(commands, buf, env, argv, counter);
 		else
 		{
 			wait(&status);
-			freeptr(buf, cmd);
+			freeptr(buf, commands);
 		}
-		len = 0;
-		buf = NULL;
-
+		len = 0, buf = NULL;
 		printprompt();
 	}
 	if (chars == -1)

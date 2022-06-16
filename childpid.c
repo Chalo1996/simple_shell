@@ -16,15 +16,15 @@ void freebuf(char *buf)
 /**
   *free_all - free all getline args read.
   *@buf: buffer from getline.
-  *@cmd: command inserted
+  *@commands: command inserted
   *
   *Return: (void)
   */
 
-void free_all(char *buf, char **cmd)
+void free_all(char *buf, char **commands)
 {
 	free(buf);
-	freeEverything(cmd);
+	freeEverything(commands);
 	exit(EXIT_SUCCESS);
 }
 
@@ -32,64 +32,64 @@ void free_all(char *buf, char **cmd)
 /**
   * prnt - free all buff cmds.
   *@buf: buffer
-  *@cmd: commands
+  *@commands: commands
   *
   *Return: (void)
   */
 
-void prnt(char *buf, char **cmd)
+void prnt(char *buf, char **commands)
 {
 	free(buf);
-	freeEverything(cmd);
+	freeEverything(commands);
 	exit(EXIT_SUCCESS);
 }
 
 /**
   *freebufend - frees enf of buffer.
   *@buf: buffer.
-  *@cmd: commands array.
-  *@envp: enviroment variables
+  *@commands: commands array.
+  *@env: enviroment variables
   *
   *Return: (void)
   */
 
-void freebufend(char *buf, char **cmd, char **envp)
+void freebufend(char *buf, char **commands, char **env)
 {
 	free(buf);
-	freeEverything(cmd);
-	envp_print(envp);
+	freeEverything(commands);
+	envp_print(env);
 	exit(EXIT_SUCCESS);
 }
 
 /**
   * _path - Get path and execute command.
-  *@cmd: array of commands
+  *@commands: array of commands
   *@buf: buffer.
-  *@envp: enviroment variables
-  *@av: argument vector
+  *@env: enviroment variables
+  *@argv: argument vector
   *@counter: number of command execution.
   *
   *Return - (void).
   */
 
-void _path(char **cmd, char *buf, char **envp, char **av, int counter)
+void _path(char **commands, char *buf, char **env, char **argv, int counter)
 {
 	struct stat f2Stat;
 	char **dirs;
 	int i = 0;
 
-	dirs = pathptr(cmd[0], envp);
+	dirs = pathptr(commands[0], env);
 	while (dirs[i])
 	{
 		if (stat(dirs[i], &f2Stat) == 0)
-			execve(dirs[i], cmd, NULL);
+			execve(dirs[i], commands, NULL);
 		i++;
 	}
 
-	msg(av, cmd[0], counter);
+	msg(argv, commands[0], counter);
 
 	free(buf);
-	freeEverything(cmd);
+	freeEverything(commands);
 	freeEverything(dirs);
 	exit(EXIT_SUCCESS);
 }

@@ -16,7 +16,7 @@ void prompt(int sl);
 void printprompt(void);
 unsigned int numcmd(char *str);
 char **string_strtok(char *str);
-void ext(char **commands, char *buf, char **env, 
+void ext(char **commands, char *buf, char **env,
 		char **argv, int counter);
 char *_strncpy(char *dest, char *src, int len);
 char *_conststrncpy(char *dest, const char *src, int len);
